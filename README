@@ -1,0 +1,13 @@
+hail docker test environment
+
+https://github.com/hail-is/hail
+
+Currently builds off latest master from hail
+
+Examples:
+
+   $ docker run -it hail
+   $ root@aa43254a73ef:/# hail -h
+   ...
+   $ docker run -v $PWD:/usr/work -w /usr/work -it  hail importvcf src/test/resources/sample.vcf write -o ~/sample.vds
+   ...
