@@ -1,26 +1,30 @@
-FROM openjdk:8u111-jdk
+FROM openjdk:8u111-jdk-alpine
 MAINTAINER Shane Husson shane.a.husson@gmail.com
 
-RUN apt-get update --fix-missing && apt-get install -y \
-  cmake \
-  g++ \
-  git
+RUN apk add --update \
+    bash \
+    cmake \
+    curl \
+    g++ \
+    git \
+    gzip \
+    make \
+    tar
 
-RUN mkdir /usr/spark
-RUN curl -sL --retry 3 \
-  "http://apache.mirror.serversaustralia.com.au/spark/spark-2.1.0/spark-2.1.0-bin-hadoop2.7.tgz" \
-  | gunzip \
-  | tar x -C /usr/spark
+ENV SPARK_HOME=/usr/spark/spark-2.1.0-bin-hadoop2.7 \
+    HAIL_HOME=/usr/hail \
+    PATH=$PATH:/usr/spark/spark-2.1.0-bin-hadoop2.7/bin:/usr/hail/build/install/hail/bin/
 
-ENV SPARK_HOME /usr/spark/spark-2.1.0-bin-hadoop2.7
-ENV PATH $PATH:${SPARK_HOME}/bin
-RUN chown -R root:root $SPARK_HOME
+RUN mkdir /usr/spark && \
+    curl -sL --retry 3 \
+    "http://apache.mirror.serversaustralia.com.au/spark/spark-2.1.0/spark-2.1.0-bin-hadoop2.7.tgz" \
+    | gzip -d \
+    | tar x -C /usr/spark && \
+    chown -R root:root $SPARK_HOME
 
-RUN git clone https://github.com/broadinstitute/hail.git /usr/hail
-RUN cd /usr/hail && ./gradlew installDist
-
-ENV HAIL_HOME=/usr/hail
-ENV PATH $PATH:${HAIL_HOME}/build/install/hail/bin/
+RUN git clone https://github.com/broadinstitute/hail.git ${HAIL_HOME} && \
+    cd ${HAIL_HOME} && \
+    ./gradlew installDist
 
 ENTRYPOINT ["hail"]
 CMD ["-h"]
