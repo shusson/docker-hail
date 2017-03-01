@@ -24,6 +24,7 @@ RUN mkdir /usr/spark && \
 
 RUN git clone https://github.com/broadinstitute/hail.git ${HAIL_HOME} && \
     cd ${HAIL_HOME} && \
+    git checkout fed768e78ac2ca06a50b6e1965d59d04d5a78e3e && \
     ./gradlew installDist
 
 ENTRYPOINT ["hail"]
