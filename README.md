@@ -1,7 +1,7 @@
 ### hail docker environment
 
 ### Note
-Currently builds off latest master from https://github.com/hail-is/hail
+This Dockerfile currently builds off fed768e78ac2ca06a50b6e1965d59d04d5a78e3e from https://github.com/hail-is/hail. This is the last version that used the CLI interface. If you want to use the latest hail and the python API see https://github.com/shusson/docker-pyhail
 
 ### Image
 https://hub.docker.com/r/shusson/hail-alpine/ (based on 7e6855c)
