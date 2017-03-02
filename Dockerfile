@@ -9,6 +9,7 @@ RUN apk add --update \
     git \
     gzip \
     make \
+    libc6-compat \
     tar
 
 ENV SPARK_HOME=/usr/spark/spark-2.1.0-bin-hadoop2.7 \
